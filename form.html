@@ -1,0 +1,50 @@
+<!--<!DOCTYPE html>
+<html>
+  <head>
+    <title>Form</title>
+  </head>
+  <body>
+    <form action="/submit" method="post">
+      <label for="URL">URL:</label>
+      <input type="text" id="URL" name="URL"><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Input Example</title>
+</head>
+<body>
+    <input type="text" id="urlInput">
+    <button onclick="submitUrl()">Submit</button>
+
+    <div id="transcriptContainer"></div>
+
+    <script>
+        function submitUrl() {
+            var url = document.getElementById("urlInput").value;
+
+            // Make an HTTP POST request to FastAPI
+            fetch('/process-url', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: url }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from FastAPI
+                var transcriptContainer = document.getElementById("transcriptContainer");
+                transcriptContainer.innerText = "Transcript: " + data.transcript;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
